@@ -15,11 +15,13 @@ public class Server {
 		
 			
 			 try {
+				 
 		         ServerSocket server = new ServerSocket(1000);
 		         System.out.println("Server Start");
-		       System.out.println(server.getLocalSocketAddress());
 		       
 		            socket = server.accept();
+		            System.out.println("Po³¹czy³em z :"+socket);
+
 		            bookToClientIs = new ObjectInputStream(socket.getInputStream());
 		            bookToClientOs = new ObjectOutputStream(socket.getOutputStream());
 		            Book book = new Book("Ma³y Ksi¹¿e");
