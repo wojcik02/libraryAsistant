@@ -24,17 +24,30 @@ public class Client {
 
 			socket = new Socket(ip, 1000);
 			System.out.println("Po³¹czy³em z :" + socket);
+
 			bookToClientOs = new ObjectOutputStream(socket.getOutputStream());
 			bookToClientIs = new ObjectInputStream(socket.getInputStream());
-			
-			while(bookToClientIs != null) {
-			Book obj1 = (Book) bookToClientIs.readObject();
-			System.out.println("Pobra³em ksi¹¿ke: " + obj1.getName());
+			dout = new DataOutputStream(socket.getOutputStream());
+			din = new DataInputStream(socket.getInputStream());
+
+			// Iloœæ ksi¹¿ek do pobrania z serwera
+			int qty = din.readInt();
+
+			System.out.println("Iloœæ ksi¹¿ek od serwera: " + qty);
+
+			for (int i = 0; i < qty; i++) {
+				Book obj = (Book) bookToClientIs.readObject();
+				System.out.println("Pobra³em ksi¹¿ke: " + obj.getName());
 			}
-			
+
+			// Odpowied¿ dla serwera po pobraniu ksi¹¿ek
+			System.out.println("Skoñczy³em obieraæ ksi¹¿ki");
+			dout.writeUTF("Dziêki za ksi¹zki!");
+
+			dout.writeUTF("end");
 			bookToClientIs.close();
 			bookToClientOs.close();
-			//socket.close();
+			socket.close();
 
 		} catch (Exception e) {
 			System.out.println(e);
