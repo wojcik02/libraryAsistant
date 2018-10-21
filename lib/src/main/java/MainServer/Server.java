@@ -16,24 +16,21 @@ public class Server {
 			
 			 try {
 				 
-		         ServerSocket server = new ServerSocket(1000);
+		         @SuppressWarnings("resource")
+				ServerSocket server = new ServerSocket(1000);
 		         System.out.println("Server Start");
-		       
+		       for(int i=1;i<3;i++) {
+		    	  
 		            socket = server.accept();
-		            System.out.println("Po³¹czy³em z :"+socket);
+		            System.out.println("W¹tek :"+i);
 
-		            bookToClientIs = new ObjectInputStream(socket.getInputStream());
-		            bookToClientOs = new ObjectOutputStream(socket.getOutputStream());
-		            Book book = new Book("Ma³y Ksi¹¿e");
-		            bookToClientOs.writeObject(book);
-		            System.out.println("Serwer wys³a³ ksi¹¿kê: "+book.getName());
+		            ClientHandler newClient = new ClientHandler(socket);
 
-		            Book book2 = new Book("Moby Dick");
-		            bookToClientOs.writeObject(book2);
-		            System.out.println("Serwer wys³a³ ksi¹¿kê: "+book2.getName());
-		            bookToClientIs.close();
-		            bookToClientOs.close();
-		            socket.close();
+		            newClient.start();
+		          
+		       }
+		       socket.close();
+		           
 		       
 		      } catch (Exception e) {
 		      }
